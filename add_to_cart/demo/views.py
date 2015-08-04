@@ -12,17 +12,6 @@ import datetime
 
 def AddToCartDavidson(request):
 
-##    #Aquire Davidson's username
-##    user = UserProfile.objects.get(user=request.user.id)
-##    username = user.davidson_login
-##
-##    #Decrypt Davidson's password
-##    fernet = Fernet(FERNET_KEY)
-##    password = fernet.decrypt(user.davidson_password)
-##
-##    #Product upc will be used to navigate to proper page once logged in
-##    product = Product.objects.get(id=request.GET.get('product_id'))
-##    upc = product.upc
     upc = '098289019349'
 
     
@@ -39,20 +28,27 @@ def AddToCartDavidson(request):
     site = "http://www11.davidsonsinc.com/Login/Login.aspx"
     br.open(site)
     br.select_form(nr=0)
-##    br.form['ctl00$ContentPlaceHolderNavPane$NavLoginForm$UserLogin$UserName'] = username
-##    br.form['ctl00$ContentPlaceHolderNavPane$NavLoginForm$UserLogin$Password'] = password
     br.form['ctl00$ContentPlaceHolderNavPane$NavLoginForm$UserLogin$UserName'] = 'scott@gsadirect.com'
     br.form['ctl00$ContentPlaceHolderNavPane$NavLoginForm$UserLogin$Password'] = 'gsadirect1'
     br.submit()
-        
+'''
+Choose random product page to aim the browser at using the products upc number in url.    
+'''
     product_page = 'http://www11.davidsonsinc.com/Dealers/ItemDetail.aspx?sid=%s&scode=upcID' % (upc,)
     br.open(product_page)
 
-    
-##    return redirect(product_page)
     c_expires = datetime.datetime.now() + datetime.timedelta(days=1)
     print c_expires
     
+'''
+2 options for redirect below.
+If redirect is pointed internally to another page in the app (/cookie/),
+the cookies are passed without issue.
+If the redirect is pointed to the Davidson's page,
+the cookies are not present.
+I am using print statements and Chrome dev-tools to observe the cookies.
+'''
+
 ##    response = redirect(product_page)
     response = redirect('/cookie/')
     for cookie in cj:
@@ -68,13 +64,6 @@ def AddToCartDavidson(request):
 
 
     return response
-
-##    Redirect to specific Davidson's product page using upc
-##    def get_redirect_url(self, *args, **kwargs):
-##        self.url = 'http://www11.davidsonsinc.com/Dealers/ItemDetail.aspx?sid=%s' % upc
-##        return super(AddToCartDavidson,
-##                     self).get_redirect_url(*args, **kwargs)
-
 
 
 def Cookie_Monster(request):
