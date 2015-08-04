@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>Ryan Noack | The Official Site</title>
+</head>
+<body style="background-color: green">
+
+<h1>Tour Dates</h1>
+
+{%block content%}
+<ul>
+{% for date in weapons %}
+<li>{{date.gig_date}}<br>{{date.venue}} | {{date.city}}, {{date.state}}</li><br>
+{% endfor %}
+</ul>
+{% endblock %}
+
+
+
+
+</body>
+
+</html>
